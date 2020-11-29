@@ -363,6 +363,38 @@ io.sockets.on('connection', function (client) {
 				broadcastToRoom( client, { action: 'setBoardSize', data: size } );
 				break;
 
+			case 'moveMarker':
+				message_out = {
+					action: message.action,
+					data: {
+						id: scrub(message.data.id),
+						x: scrub(message.data.x)
+					}
+				};
+
+				broadcastToRoom(client, message_out);
+
+				getRoom(client, function(room) {
+					db.moveMarkerX(room , message.data.id, message.data.x);
+				});
+				break;
+
+			case 'moveEraser':
+				message_out = {
+					action: message.action,
+					data: {
+						id: scrub(message.data.id),
+						x: scrub(message.data.x)
+					}
+				};
+
+				broadcastToRoom(client, message_out);
+
+				getRoom(client, function(room) {
+					db.moveEraserX(room , message.data.id, message.data.x);
+				});
+				break;
+
 			default:
 			    console.log('unknown action: ' + message.action);
 				break;
@@ -380,13 +412,12 @@ io.sockets.on('connection', function (client) {
 /**************
  FUNCTIONS
 **************/
-function initClient ( client )
+function initClient(client)
 {
 	//console.log ('initClient Started');
 	getRoom(client, function(room) {
 
-		db.getAllCards( room , function (cards) {
-
+		db.getAllCards(room , function (cards) {
 			client.json.send(
 				{
 					action: 'initCards',
@@ -396,7 +427,7 @@ function initClient ( client )
 
 		});
 
-		db.getAllColumns ( room, function (columns) {
+		db.getAllColumns(room, function (columns) {
 			client.json.send(
 				{
 					action: 'initColumns',
@@ -405,7 +436,7 @@ function initClient ( client )
 			);
 		});
 
-		db.getAllRows ( room, function (rows) {
+		db.getAllRows(room, function (rows) {
 			client.json.send(
 				{
 					action: 'initRows',
@@ -414,8 +445,36 @@ function initClient ( client )
 			);
 		});
 
-		db.getTheme( room, function(theme) {
-			if (theme === null) theme = 'bigcards';
+		db.getEraser(room, function(eraser) {
+		    if (eraser == null) {
+		        eraser = {id: 'eraser', x: '70px'};
+		    }
+
+			client.json.send(
+				{
+					action: 'moveEraser',
+					data: eraser
+				}
+			);
+		});
+
+		db.getMarker(room, function(marker) {
+		    if (marker == null) {
+		        marker = {id: 'marker', x: '200px'};
+		    }
+
+			client.json.send(
+				{
+					action: 'moveMarker',
+					data: marker
+				}
+			);
+		});
+
+		db.getTheme(room, function(theme) {
+			if (theme === null) {
+			    theme = 'bigcards';
+			}
 
 			client.json.send(
 				{
@@ -450,7 +509,6 @@ function initClient ( client )
 			}
 		}
 
-		//console.log('initialusers: ' + roommates);
 		client.json.send(
 			{
 				action: 'initialUsers',
@@ -465,7 +523,7 @@ function initClient ( client )
 function joinRoom (client, room, successFunction) {
 	var msg = {};
 	msg.action = 'join-announce';
-	msg.data		= { sid: client.id, user_name: client.user_name };
+	msg.data = { sid: client.id, user_name: client.user_name };
 
 	rooms.add_to_room_and_announce(client, room, msg);
 	successFunction();
@@ -475,7 +533,7 @@ function leaveRoom (client) {
 	//console.log (client.id + ' just left');
 	var msg = {};
 	msg.action = 'leave-announce';
-	msg.data	= { sid: client.id };
+	msg.data = { sid: client.id };
 	rooms.remove_from_all_rooms_and_announce(client, msg);
 
 	delete sids_to_user_names[client.id];
@@ -508,14 +566,12 @@ function roundRand( max ) {
 // Get Room name for the given Session ID
 function getRoom( client , callback ) {
 	room = rooms.get_room( client );
-	//console.log( 'client: ' + client.id + " is in " + room);
 	callback(room);
 }
 
 function setUserName ( client, name ) {
 	client.user_name = name;
 	sids_to_user_names[client.id] = name;
-	//console.log('sids to user names: ');
 	console.dir(sids_to_user_names);
 }
 

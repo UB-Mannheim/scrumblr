@@ -13,6 +13,7 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - visible star stickers
 - MongoDB fixes
 - Markdown syntax on cards
+- Moveable eraser and marker
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)

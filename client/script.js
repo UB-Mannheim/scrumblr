@@ -145,6 +145,14 @@ function getMessage(m) {
             $("#" + data.id).children('.row-text').text(data.text);
             break;
 
+        case 'moveEraser':
+            moveEraser($("#" + data.id), data.x);
+            break;
+
+        case 'moveMarker':
+            moveMarker($("#" + data.id), data.x);
+            break;
+
         case 'changeTheme':
             changeThemeTo(data);
             break;
@@ -172,6 +180,7 @@ function getMessage(m) {
         case 'setBoardSize':
             resizeBoard(message.data);
             adjustRows(message.data.width);
+            adjustEraserAndMarker(message.data.height);
             break;
 
         default:
@@ -218,7 +227,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
 		handle: "div.content"
     });
 
-    //After a drag:
+    // After a drag
     card.bind("dragstop", function(event, ui) {
         if (keyTrap == 27) {
             keyTrap = null;
@@ -332,6 +341,30 @@ function moveCard(card, position) {
         left: position.left + "px",
         top: position.top + "px"
     }, 500);
+}
+
+function moveEraser(eraser, x) {
+    eraser.animate({
+        left: x + "px",
+        top: eraser.position.top + "px"
+    }, 500);
+}
+
+function moveMarker(marker, x) {
+    marker.animate({
+        left: x + "px",
+        top: marker.position.top + "px"
+    }, 500);
+}
+
+function adjustEraserAndMarker(boardHeight) {
+    h = boardHeight == null ? $('#board').height() : boardHeight;
+
+    eraser = $('#eraser');
+    eraser.css('top', (h - eraser.height()) + 'px');
+
+    marker = $('#marker');
+    marker.css('top', (h - marker.height()) + 'px');
 }
 
 function addSticker(cardId, stickerId) {
@@ -488,10 +521,6 @@ function displayRemoveColumn() {
 
 function createColumn(name) {
     if (totalcolumns >= 8) {
-        return false;
-    }
-
-    if (!confirm('Do you really want to add a column?')) {
         return false;
     }
 
@@ -808,19 +837,14 @@ function adjustCard(offsets, doSync) {
                     left: parseInt(card.css('left').slice(0, -2)),
                     top: parseInt(card.css('top').slice(0, -2))
                 }
-            }; //use .css() instead of .position() because css' rotate
-            //console.log(data);
+            };
             if (!doSync) {
                 card.css('left', data.position.left);
                 card.css('top', data.position.top);
             } else {
-                //note that in this case, data.oldposition isn't accurate since
-                //many moves have happened since the last sync
-                //but that's okay becuase oldPosition isn't used right now
                 moveCard(card, data.position);
                 sendAction('moveCard', data);
             }
-
         }
     });
 }
@@ -897,6 +921,11 @@ $(function() {
 
     $('#add-col').click(
         function() {
+            cardCount = $(".card").size();
+            if (cardCount > 0 && !confirm('Do you really want to add a column?')) {
+                return false;
+            }
+
             createColumn('New');
             return false;
         }
@@ -904,9 +933,12 @@ $(function() {
 
     $('#delete-col').click(
         function() {
-            if (confirm('Do you really want to delete the column?')) {
-                deleteColumn();
+            cardCount = $(".card").size();
+            if (cardCount > 0 && !confirm('Do you really want to delete the column?')) {
+                return false;
             }
+
+            deleteColumn();
             return false;
         }
     );
@@ -970,21 +1002,73 @@ $(function() {
         });
         $(".board-outline").bind("resize", function(event, ui) {
             adjustCard(offsets, false);
+            adjustEraserAndMarker(null);
         });
         $(".board-outline").bind("resizestop", function(event, ui) {
             boardResizeHappened(event, ui);
             adjustCard(offsets, true);
             adjustRows(ui.position.width);
+            adjustEraserAndMarker(ui.position.height);
         });
     })();
 
-    $('#marker').draggable({
+    marker = $('#marker')
+    marker.draggable({
         axis: 'x',
-        containment: 'parent'
+        containment: 'parent',
+        start: function(event, ui) {
+            keyTrap = null;
+        },
+        drag: function(event, ui) {
+            if (keyTrap == 27) {
+                ui.helper.css(ui.originalPosition);
+                return false;
+            }
+        }
     });
 
-    $('#eraser').draggable({
+    // After a drag
+    marker.bind("dragstop", function(event, ui) {
+        if (keyTrap == 27) {
+            keyTrap = null;
+            return;
+        }
+
+        var data = {
+            id: this.id,
+            x: ui.position.left
+        };
+
+        sendAction('moveMarker', data);
+    });
+
+    eraser = $('#eraser');
+    eraser.draggable({
         axis: 'x',
-        containment: 'parent'
+        containment: 'parent',
+        start: function(event, ui) {
+            keyTrap = null;
+        },
+        drag: function(event, ui) {
+            if (keyTrap == 27) {
+                ui.helper.css(ui.originalPosition);
+                return false;
+            }
+        }
+    });
+
+    // After a drag
+    eraser.bind("dragstop", function(event, ui) {
+        if (keyTrap == 27) {
+            keyTrap = null;
+            return;
+        }
+
+        var data = {
+            id: this.id,
+            x: ui.position.left
+        };
+
+        sendAction('moveEraser', data);
     });
 });
