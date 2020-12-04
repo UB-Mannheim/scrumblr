@@ -193,6 +193,17 @@ io.sockets.on('connection', function (client) {
 
 				break;
 
+			case 'pulsateCard':
+				clean_message = {
+					action: 'pulsateCard',
+					data: {
+					    id: scrub(message.data.id)
+					}
+				};
+
+				broadcastToRoom( client, clean_message );
+				break;
+
 			case 'createColumn':
 				clean_message = { data: scrub(message.data) };
 

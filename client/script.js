@@ -4,14 +4,14 @@ var columns = [];
 var currentTheme = "bigcards";
 var boardInitialized = false;
 var keyTrap = null;
+var ctrlPressed = false;
 
 var baseurl = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
 var socket = io.connect({path: baseurl + "/socket.io"});
 
-//an action has happened, send it to the
-//server
+//an action has happened, send it to the server
 function sendAction(a, d) {
-    //console.log('--> ' + a);
+    // console.log('--> ' + a);
 
     var message = {
         action: a,
@@ -110,6 +110,10 @@ function getMessage(m) {
             $("#" + data.id).children('.content:first').html(marked(data.value));
             break;
 
+        case 'pulsateCard':
+            pulsateCard(data.id);
+            break;
+
         case 'initColumns':
             initColumns(data);
             break;
@@ -192,6 +196,18 @@ function getMessage(m) {
 
 $(document).bind('keyup', function(event) {
     keyTrap = event.which;
+
+    if (keyTrap == 17) { // ctrl
+        ctrlPressed = false;
+     }
+});
+
+$(document).bind('keydown', function(event) {
+    keyTrap = event.which;
+
+    if (keyTrap == 17) { // ctrl
+        ctrlPressed = true;
+    }
 });
 
 function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
@@ -302,7 +318,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
             $("#" + id).remove();
             //notify server of delete
             sendAction('deleteCard', {
-                'id': id
+                id: id
             });
         }
     );
@@ -323,6 +339,21 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
         onblur: 'submit',
         event: 'dblclick'
     });
+
+    card.click(
+        function() {
+            if (!ctrlPressed) {
+                return;
+            }
+
+            var data = {
+                id: this.id
+            };
+
+            sendAction('pulsateCard', data);
+            pulsateCard(this.id);
+        }
+    );
 
     //add applicable sticker
     if (sticker !== null)
@@ -454,6 +485,9 @@ function initCards(cardArray) {
     unblockUI();
 }
 
+function pulsateCard(id) {
+    $("#" + id).effect("pulsate", { times: 3 }, 2000);
+}
 
 //----------------------------------
 // COLUMNS

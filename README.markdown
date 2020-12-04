@@ -1,4 +1,4 @@
-scrumblr
+scrumblr, v. 0.7.0
 ========
 
 what is it
@@ -14,6 +14,7 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - MongoDB fixes
 - Markdown syntax on cards
 - Moveable eraser and marker
+- Enable to pulsate a card for a while to draw attention (press Ctrl and click on a card)
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)
