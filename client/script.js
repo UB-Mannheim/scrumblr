@@ -460,6 +460,23 @@ function createCardAtRandomPos(color) {
         color);
 }
 
+function createCardAtDlgPos(color) {
+    var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
+    var id = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
+
+    var dlg = $('#buttons-dialog');
+
+    createCard(
+        'card' + id,
+        '',
+        dlg.position().left + 60,
+        dlg.position().top,
+        rotation,
+        color);
+
+    dlg.css('visibility', 'hidden');
+}
+
 function initCards(cardArray) {
     //first delete any cards that exist
     $('.card').remove();
@@ -930,6 +947,41 @@ $(function() {
             createCardAtRandomPos('red')
         });
 
+    $("#create-card-yellow-dlg")
+        .click(function() {
+            createCardAtDlgPos('yellow')
+        });
+
+    $("#create-card-green-dlg")
+        .click(function() {
+            createCardAtDlgPos('green')
+        });
+
+    $("#create-card-blue-dlg")
+        .click(function() {
+            createCardAtDlgPos('blue')
+        });
+
+    $("#create-card-white-dlg")
+        .click(function() {
+            createCardAtDlgPos('white')
+        });
+
+    $("#create-card-orange-dlg")
+        .click(function() {
+            createCardAtDlgPos('orange')
+        });
+
+    $("#create-card-purple-dlg")
+        .click(function() {
+            createCardAtDlgPos('purple')
+        });
+
+    $("#create-card-red-dlg")
+        .click(function() {
+            createCardAtDlgPos('red')
+        });
+
     // Style changer
     $("#smallify").click(function() {
         if (currentTheme == "smallcards") {
@@ -1104,5 +1156,28 @@ $(function() {
         };
 
         sendAction('moveEraser', data);
+    });
+
+    $('#board').click(function(event) {
+        // ignore clicking on a card
+        if (event.target.tagName == 'DIV') {
+            return;
+        }
+
+        // if clicking outsize of dialog, hide it
+        var dlg = $('#buttons-dialog');
+        if (dlg.css('visibility') == 'visible') {
+            dlg.css('visibility', 'hidden');
+        }
+
+        if (!ctrlPressed) {
+            return;
+        }
+
+        // show create card dialog
+        var top = event.pageY - 50;
+        var left = event.pageX - 20;
+        dlg.css({top: top + 'px', left: left + 'px', position: 'relative'});
+        dlg.css('visibility', 'visible');
     });
 });

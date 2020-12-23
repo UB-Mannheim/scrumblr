@@ -1,4 +1,4 @@
-scrumblr, v. 0.7.0
+scrumblr, v. 0.8.0
 ========
 
 what is it
@@ -12,9 +12,11 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - middle-sized cards
 - visible star stickers
 - MongoDB fixes
-- Markdown syntax on cards
-- Moveable eraser and marker
-- Enable to pulsate a card for a while to draw attention (press Ctrl and click on a card)
+- Markdown syntax on cards - v. 0.5.0
+- Moveable eraser and marker - v. 0.6.0
+- Enable to pulsate a card for a while to draw attention (press Ctrl and click on a card) - v. 0.7.0
+- Show a dialog to select a color and create a new card anywhere on the board. Useful for big boards.
+  (press Ctrl and click on the board) - v. 0.8.0
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)
