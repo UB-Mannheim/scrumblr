@@ -1,4 +1,4 @@
-scrumblr, v. 0.8.0
+scrumblr, v. 0.8.1
 ========
 
 what is it
@@ -17,6 +17,7 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - Enable to pulsate a card for a while to draw attention (press Ctrl and click on a card) - v. 0.7.0
 - Show a dialog to select a color and create a new card anywhere on the board. Useful for big boards.
   (press Ctrl and click on the board) - v. 0.8.0
+- Fix to the card dialog. - v. 0.8.1
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)

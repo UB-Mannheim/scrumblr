@@ -1160,7 +1160,7 @@ $(function() {
 
     $('#board').click(function(event) {
         // ignore clicking on a card
-        if (event.target.tagName == 'DIV') {
+        if (event.target.tagName != 'TD') {
             return;
         }
 
@@ -1172,6 +1172,8 @@ $(function() {
 
         if (!ctrlPressed) {
             return;
+        } else {
+            ctrlPressed = false;
         }
 
         // show create card dialog
