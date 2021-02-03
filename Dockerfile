@@ -27,7 +27,9 @@ COPY docker_entrypoint.sh /docker_entrypoint.sh
 RUN useradd -u 1000 -g games scrumblr \
     && chown scrumblr:games /docker_entrypoint.sh \
     && chown -R scrumblr:games /opt/scrumblr \
-    && chown -R scrumblr:games /var/lib/redis
+    && chown -R scrumblr:games /var/lib/redis \
+    && chown scrumboard:games /etc/redis.conf \
+    && chown -R scrumboard:games /var/log/redis
 
 EXPOSE 8080
 
