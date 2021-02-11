@@ -7,11 +7,6 @@ exports.server = {
 	baseurl: argv.baseurl || '/'
 };
 
-exports.googleanalytics = {
-	enabled: argv['gaEnabled'] || false,
-	account: argv['gaAccount'] || "UA-2069672-4"
-};
-
 if ('mongodb' in argv) {
     // parse MongoDB URL
     dbHost = argv.mongodb.split(':')[0]

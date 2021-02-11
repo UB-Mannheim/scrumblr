@@ -31,9 +31,6 @@ var router = express.Router();
 app.use(compression());
 app.use(conf.baseurl, router);
 
-app.locals.ga = ga.enabled;
-app.locals.gaAccount = ga.account;
-
 router.use(express.static(__dirname + '/client'));
 
 var server = require('http').Server(app);

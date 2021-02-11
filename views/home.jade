@@ -10,12 +10,11 @@ html(lang="en")
 		title scrumblr
 
 body
-	h1 scrumblr by <a href="https://github.com/lspevak/scrumblr">aliasaria</a>
+	h1 <a href="https://github.com/lspevak/scrumblr" target="_blank">scrumblr</a>
 
 	div.board-outline
 		div#board
 			div#board-doodles
-
 
 			table#board-table.board-table
 				tr
@@ -28,9 +27,9 @@ body
 							a#go(onclick="return go();") &nbsp;go.
 						<br><br>
 						p.home example board:
-						p.home!= '<a href="http://' + locals.url + '/demo">' + locals.url + '/demo</a>'
+						p.home!= '<a href="//' + locals.url + '/demo">' + locals.url + '/demo</a>'
 						<br><br><br>
-						p.home.small sourcecode (fork) at <a href="https://github.com/lspevak/scrumblr">github</a>
+						p.home.small sourcecode (fork) at <a href="https://github.com/lspevak/scrumblr" target="_blank">github</a>
 
 	div.stickers
 		div.sticker#sticker-red
@@ -48,9 +47,5 @@ body
 		div.sticker#sticker-silverstar
 		div.sticker#sticker-redstar
 
-
 	//display # of active users here
 	div.active-connections= "connections: " + connected
-
-	<script type="text/javascript">function go() {var value = document.forms[0].elements["name"].value; value = escape(value); window.location.href = value; return false;}</script>
-	<!-- script type="text/javascript">	  var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-2069672-4']);  _gaq.push(['_trackPageview']);   (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })(); </script -->
