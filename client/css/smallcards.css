@@ -12,16 +12,8 @@
 	display: block;
 }
 
-.pink {
-}
-
-.yellow {
-}
-
-.blue {
-}
-
-.green {
+.card-icon-pi {
+    top: 0px; left: 87%;
 }
 
 .card-image {
@@ -52,9 +44,21 @@
 	padding-top: 5px;
 }
 
+.content-pi {
+	width: 95px;
+	height: 65px;
+	/* top | right | bottom | left */
+	margin: 0px 2px 0px 12px;
+}
+
 .filler {
 	margin-right: 12px;
-	margin-bottom: 19px;
+	margin-bottom: 15%;
+	margin-left: 19px;
+}
+
+.filler-pi {
+	margin-bottom: 5%;
 	margin-left: 19px;
 }
 

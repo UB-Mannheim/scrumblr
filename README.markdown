@@ -1,4 +1,4 @@
-scrumblr, v. 0.8.1
+scrumblr, v. 0.9.0
 ========
 
 what is it
@@ -18,6 +18,7 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - Show a dialog to select a color and create a new card anywhere on the board. Useful for big boards.
   (press Ctrl and click on the board) - v. 0.8.0
 - Fix to the card dialog. - v. 0.8.1
+- Seven new colors of Postit-like cards, so 14 cards in 3 sizes are available now. - v. 0.9.0
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)

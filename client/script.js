@@ -94,7 +94,7 @@ function getMessage(m) {
             break;
 
         case 'createCard':
-            drawNewCard(data.id, data.text, data.x, data.y, data.rot, data.colour, null);
+            drawNewCard(data.id, data.text, data.x, data.y, data.rot, data.colour, null, data.type);
             break;
 
         case 'deleteCard':
@@ -210,17 +210,30 @@ $(document).bind('keydown', function(event) {
     }
 });
 
-function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
-    //cards[id] = {id: id, text: text, x: x, y: y, rot: rot, colour: colour};
+function drawNewCard(id, text, x, y, rot, colour, sticker, type) {
+	var img_src = null;
+	var style_content = null;
+
+	if (typeof(type) == "undefined" || type == 1) {
+	    img_src = colour + "-card.png";
+	    style_content = "";
+	    style_card_icon = "";
+	    style_filler = "";
+	} else if (type == 2) {
+	    img_src = colour + "-card-pi.png";
+	    style_content = " content-pi";
+	    style_card_icon = " card-icon-pi";
+	    style_filler = " filler-pi";
+	}
 
     var h = '<div id="' + id + '" class="card ' + colour +
         ' draggable" style="-webkit-transform:rotate(' + rot +
         'deg);\
 	">\
-	<img src="images/icons/token/Xion.png" class="card-icon delete-card-icon" />\
-	<img class="card-image" src="images/' + colour + '-card.png">\
-	<div id="content:' + id + '" class="content stickertarget droppable" data-text="">' +
-        marked(text) + '</div><span class="filler"></span></div>';
+	<img src="images/icons/token/Xion.png" class="card-icon' + style_card_icon + ' delete-card-icon" />\
+	<img class="card-image" src="images/' + img_src + '">\
+	<div id="content:' + id + '" class="content' + style_content + ' stickertarget droppable" data-text="">' +
+        marked(text) + '</div><span class="filler' + style_filler + '"></span></div>';
 
     var card = $(h);
     card.appendTo('#board');
@@ -281,8 +294,6 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, animationspeed) {
     });
 
     var speed = Math.floor(Math.random() * 1000);
-    if (typeof(animationspeed) != 'undefined') speed = animationspeed;
-
     var startPosition = $("#create-card").position();
 
     card.css('top', startPosition.top - card.height() * 0.5);
@@ -421,18 +432,18 @@ function addSticker(cardId, stickerId) {
 //----------------------------------
 // cards
 //----------------------------------
-function createCard(id, text, x, y, rot, colour) {
-    drawNewCard(id, text, x, y, rot, colour, null);
+function createCard(id, text, x, y, rot, colour, type) {
+    drawNewCard(id, text, x, y, rot, colour, null, type);
 
     var action = "createCard";
-
     var data = {
         id: id,
         text: text,
         x: x,
         y: y,
         rot: rot,
-        colour: colour
+        colour: colour,
+        type: type
     };
 
     sendAction(action, data);
@@ -445,7 +456,7 @@ function randomCardColour() {
     return colours[i];
 }
 
-function createCardAtRandomPos(color) {
+function createCardAtRandomPos(color, type) {
     var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
     var id = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
     var offsetX = Math.round(Math.random() * 50)
@@ -457,10 +468,11 @@ function createCardAtRandomPos(color) {
         60 + offsetX,
         $('div.board-outline').height() + 30 + offsetY,
         rotation,
-        color);
+        color,
+        type);
 }
 
-function createCardAtDlgPos(color) {
+function createCardAtDlgPos(color, type) {
     var rotation = Math.random() * 10 - 5; //add a bit of random rotation (+/- 10deg)
     var id = Math.round(Math.random() * 99999999); //is this big enough to assure uniqueness?
 
@@ -472,7 +484,8 @@ function createCardAtDlgPos(color) {
         dlg.position().left + 60,
         dlg.position().top,
         rotation,
-        color);
+        color,
+        type);
 
     dlg.css('visibility', 'hidden');
 }
@@ -494,7 +507,7 @@ function initCards(cardArray) {
             card.rot,
             card.colour,
             card.sticker,
-            0
+            card.type
         );
     }
 
@@ -909,77 +922,147 @@ $(function() {
 
     $("#create-card")
         .click(function() {
-            createCardAtRandomPos(randomCardColour())
+            createCardAtRandomPos(randomCardColour(), 1)
         });
 
     $("#create-card-yellow")
         .click(function() {
-            createCardAtRandomPos('yellow')
+            createCardAtRandomPos('yellow', 1)
         });
 
     $("#create-card-green")
         .click(function() {
-            createCardAtRandomPos('green')
+            createCardAtRandomPos('green', 1)
         });
 
     $("#create-card-blue")
         .click(function() {
-            createCardAtRandomPos('blue')
+            createCardAtRandomPos('blue', 1)
         });
 
     $("#create-card-white")
         .click(function() {
-            createCardAtRandomPos('white')
+            createCardAtRandomPos('white', 1)
         });
 
     $("#create-card-orange")
         .click(function() {
-            createCardAtRandomPos('orange')
+            createCardAtRandomPos('orange', 1)
         });
 
     $("#create-card-purple")
         .click(function() {
-            createCardAtRandomPos('purple')
+            createCardAtRandomPos('purple', 1)
         });
 
     $("#create-card-red")
         .click(function() {
-            createCardAtRandomPos('red')
+            createCardAtRandomPos('red', 1)
+        });
+
+    $("#create-card-pi-white")
+        .click(function() {
+            createCardAtRandomPos('white', 2)
+        });
+
+    $("#create-card-pi-yellow")
+        .click(function() {
+            createCardAtRandomPos('yellow', 2)
+        });
+
+    $("#create-card-pi-green")
+        .click(function() {
+            createCardAtRandomPos('green', 2)
+        });
+
+    $("#create-card-pi-blue")
+        .click(function() {
+            createCardAtRandomPos('blue', 2)
+        });
+
+    $("#create-card-pi-orange")
+        .click(function() {
+            createCardAtRandomPos('orange', 2)
+        });
+
+    $("#create-card-pi-purple")
+        .click(function() {
+            createCardAtRandomPos('purple', 2)
+        });
+
+    $("#create-card-pi-red")
+        .click(function() {
+            createCardAtRandomPos('red', 2)
         });
 
     $("#create-card-yellow-dlg")
         .click(function() {
-            createCardAtDlgPos('yellow')
-        });
-
-    $("#create-card-green-dlg")
-        .click(function() {
-            createCardAtDlgPos('green')
-        });
-
-    $("#create-card-blue-dlg")
-        .click(function() {
-            createCardAtDlgPos('blue')
-        });
-
-    $("#create-card-white-dlg")
-        .click(function() {
-            createCardAtDlgPos('white')
-        });
-
-    $("#create-card-orange-dlg")
-        .click(function() {
-            createCardAtDlgPos('orange')
-        });
-
-    $("#create-card-purple-dlg")
-        .click(function() {
-            createCardAtDlgPos('purple')
+            createCardAtDlgPos('yellow', 1)
         });
 
     $("#create-card-red-dlg")
         .click(function() {
-            createCardAtDlgPos('red')
+            createCardAtDlgPos('red', 1)
+        });
+
+    $("#create-card-green-dlg")
+        .click(function() {
+            createCardAtDlgPos('green', 1)
+        });
+
+    $("#create-card-blue-dlg")
+        .click(function() {
+            createCardAtDlgPos('blue', 1)
+        });
+
+    $("#create-card-white-dlg")
+        .click(function() {
+            createCardAtDlgPos('white', 1)
+        });
+
+    $("#create-card-orange-dlg")
+        .click(function() {
+            createCardAtDlgPos('orange', 1)
+        });
+
+    $("#create-card-purple-dlg")
+        .click(function() {
+            createCardAtDlgPos('purple', 1)
+        });
+
+    $("#create-card-pi-yellow-dlg")
+        .click(function() {
+            createCardAtDlgPos('yellow', 1)
+        });
+
+    $("#create-card-pi-red-dlg")
+        .click(function() {
+            createCardAtDlgPos('red', 1)
+        });
+
+    $("#create-card-pi-green-dlg")
+        .click(function() {
+            createCardAtDlgPos('green', 2)
+        });
+
+    $("#create-card-pi-blue-dlg")
+        .click(function() {
+            createCardAtDlgPos('blue', 2)
+        });
+
+    $("#create-card-pi-white-dlg")
+        .click(function() {
+            createCardAtDlgPos('white', 2)
+        });
+
+    $("#create-card-pi-orange-dlg")
+        .click(function() {
+            createCardAtDlgPos('orange', 2)
+        });
+
+    $("#create-card-pi-purple-dlg")
+        .click(function() {
+            createCardAtDlgPos('purple', 2)
         });
 
     // Style changer

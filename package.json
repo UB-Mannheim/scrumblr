@@ -1,11 +1,11 @@
 {
   "name": "scrumblr",
   "description": "Web-based simulation of a physical agile sprint board that supports real-time collaboration.",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "repository": {
     "url": "http://github.com/lspevak/scrumblr"
   },
-  "author": "Ali Asaria (http://github.com/aliasaria/scrumblr)",
+  "author": "Ali Asaria (http://github.com/aliasaria/scrumblr), Libor Spevak (http://github.com/lspevak/scrumblr)",
   "main": "server.js",
   "directories": {
     "lib": "lib/"

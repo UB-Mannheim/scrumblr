@@ -12,16 +12,8 @@
 	display: block;
 }
 
-.pink {
-}
-
-.yellow {
-}
-
-.blue {
-}
-
-.green {
+.card-icon-pi {
+    top: 0px; left: 92%;
 }
 
 .card-image {
@@ -52,10 +44,22 @@
 	xopacity: .8;
 }
 
+.content-pi {
+	width: 250px;
+	height: 155px;
+	/* top | right | bottom | left */
+	margin: -15px 2px 0px 25px;
+}
+
 .filler {
-	margin-right: 34px;
-	margin-bottom: 42px;
+	margin-right: 50px;
+	margin-bottom: 17%;
 	margin-left: 25px;
+}
+
+.filler-pi {
+	margin-bottom: 5%;
+	margin-right: 30px;
 }
 
 .stickertarget {
