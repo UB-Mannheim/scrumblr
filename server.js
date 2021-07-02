@@ -79,17 +79,20 @@ router.get('/:id', function(req, res){
 **************/
 io.sockets.on('connection', function (client) {
 	//santizes text
-	function scrub( text ) {
+	function scrub(text) {
 		if (typeof text != "undefined" && text !== null) {
-			//clip the string if it is too long
-			if (text.length > 65535) {
-				text = text.substr(0,65535);
-			}
-
+            text = clip_text(text);
 			return sanitizer.sanitize(text);
 		} else {
 			return null;
 		}
+	}
+
+	function clip_text(text) {
+        if (text.length > 65535) {
+            text = text.substr(0,65535);
+        }
+        return text;
 	}
 
 	client.on('message', function( message ){
@@ -137,7 +140,7 @@ io.sockets.on('connection', function (client) {
 			case 'createCard':
 				data = message.data;
 				clean_data = {};
-				clean_data.text = scrub(data.text);
+				clean_data.text = clip_text(data.text);
 				clean_data.id = scrub(data.id);
 				clean_data.x = scrub(data.x);
 				clean_data.y = scrub(data.y);
@@ -169,7 +172,7 @@ io.sockets.on('connection', function (client) {
 
 			case 'editCard':
 				clean_data = {};
-				clean_data.value = scrub(message.data.value);
+				clean_data.value = clip_text(message.data.value);
 				clean_data.id = scrub(message.data.id);
 
 				//send update to database

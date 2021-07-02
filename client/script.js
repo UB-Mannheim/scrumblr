@@ -236,6 +236,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, type) {
         marked(text) + '</div><span class="filler' + style_filler + '"></span></div>';
 
     var card = $(h);
+
     card.appendTo('#board');
     $("#" + id).children('.content:first').attr('data-text', text);
 
