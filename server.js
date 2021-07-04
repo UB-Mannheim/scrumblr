@@ -5,6 +5,7 @@ var	http = require('http');
 var sys = require('sys');
 var	async = require('async');
 var sanitizer = require('sanitizer');
+var sanitizeMarkdown = require('sanitize-markdown');
 var compression = require('compression');
 var express = require('express');
 var conf = require('./config.js').server;
@@ -78,7 +79,7 @@ router.get('/:id', function(req, res){
  SOCKET.I0
 **************/
 io.sockets.on('connection', function (client) {
-	//santizes text
+	// sanitizes text
 	function scrub(text) {
 		if (typeof text != "undefined" && text !== null) {
             text = clip_text(text);
@@ -88,9 +89,20 @@ io.sockets.on('connection', function (client) {
 		}
 	}
 
+	// sanitizes markdown
+	function scrub_md(text) {
+		if (typeof text != "undefined" && text !== null) {
+            text = clip_text(text);
+			return sanitizeMarkdown(text);
+		} else {
+			return null;
+		}
+	}
+
+	// ensure that the text has a reasonable length
 	function clip_text(text) {
-        if (text.length > 65535) {
-            text = text.substr(0,65535);
+        if (text.length > 5000) {
+            text = text.substr(0, 5000);
         }
         return text;
 	}
@@ -140,7 +152,7 @@ io.sockets.on('connection', function (client) {
 			case 'createCard':
 				data = message.data;
 				clean_data = {};
-				clean_data.text = clip_text(data.text);
+				clean_data.text = scrub_md(data.text);
 				clean_data.id = scrub(data.id);
 				clean_data.x = scrub(data.x);
 				clean_data.y = scrub(data.y);
@@ -172,7 +184,7 @@ io.sockets.on('connection', function (client) {
 
 			case 'editCard':
 				clean_data = {};
-				clean_data.value = clip_text(message.data.value);
+				clean_data.value = scrub_md(message.data.value);
 				clean_data.id = scrub(message.data.id);
 
 				//send update to database
