@@ -1033,12 +1033,12 @@ $(function() {
 
     $("#create-card-pi-yellow-dlg")
         .click(function() {
-            createCardAtDlgPos('yellow', 1)
+            createCardAtDlgPos('yellow', 2)
         });
 
     $("#create-card-pi-red-dlg")
         .click(function() {
-            createCardAtDlgPos('red', 1)
+            createCardAtDlgPos('red', 2)
         });
 
     $("#create-card-pi-green-dlg")
