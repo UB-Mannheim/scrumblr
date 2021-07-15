@@ -214,7 +214,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, type) {
 	var img_src = null;
 	var style_content = null;
 
-	if (typeof(type) == "undefined" || type == 1) {
+	if (!type || type == 1) {
 	    img_src = colour + "-card.png";
 	    style_content = "";
 	    style_card_icon = "";
