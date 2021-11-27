@@ -243,7 +243,7 @@ function drawNewCard(id, text, x, y, rot, colour, sticker, type) {
     card.draggable({
         snap: false,
         snapTolerance: 5,
-        containment: [0, 0, 2000, 2000],
+        containment: [0, 0, 3100, 3100],
         stack: ".card",
         start: function(event, ui) {
             keyTrap = null;
@@ -1160,7 +1160,7 @@ $(function() {
         minWidth: 700,
         minHeight: 400,
         maxWidth: 3200,
-        maxHeight: 1800,
+        maxHeight: 3200,
     });
 
     //A new scope for precalculating
