@@ -9,7 +9,6 @@ var sanitizeMarkdown = require('sanitize-markdown');
 var compression = require('compression');
 var express = require('express');
 var conf = require('./config.js').server;
-var ga = require('./config.js').googleanalytics;
 
 /**************
  LOCAL INCLUDES

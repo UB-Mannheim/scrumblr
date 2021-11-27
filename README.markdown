@@ -1,4 +1,4 @@
-scrumblr, v. 0.9.0
+scrumblr, v. 0.9.1
 ========
 
 what is it
@@ -11,14 +11,15 @@ This fork contains useful extensions and fixes of this simple and great tool use
 - create card button for each color
 - middle-sized cards
 - visible star stickers
-- MongoDB fixes
-- Markdown syntax on cards - v. 0.5.0
-- Moveable eraser and marker - v. 0.6.0
-- Enable to pulsate a card for a while to draw attention (press Ctrl and click on a card) - v. 0.7.0
-- Show a dialog to select a color and create a new card anywhere on the board. Useful for big boards.
+- Redis/MongoDB fixes
+- mark-down syntax on cards - v. 0.5.0
+- movable eraser and marker - v. 0.6.0
+- enable to pulsate a card for a while to draw attention (press Ctrl and click on a card) - v. 0.7.0
+- show a dialog to select a color and create a new card anywhere on the board. Useful for big boards
   (press Ctrl and click on the board) - v. 0.8.0
-- Fix to the card dialog. - v. 0.8.1
-- Seven new colors of Postit-like cards, so 14 cards in 3 sizes are available now. - v. 0.9.0
+- fix to the card dialog - v. 0.8.1
+- seven new colors of Postit-like cards, so 14 cards in 3 sizes are available now - v. 0.9.0
+- upgrade of socket.io library (trying to solve time-out issues), extend max. board dimensions - v. 0.9.1
 - ...
 
 ![Extensions and fixes](scrumblr_extensions_2020.png)
@@ -58,8 +59,8 @@ how to install and run on your own computer (linux/osx)
 -------------------------------------------------------
 
 - [install redis](http://redis.io/download) (last tested on v2.8.4)
-- [install node.js](http://nodejs.org/) (last tested on v0.10.30)
-- install npm (if you're running node.js [v0.6.3](https://github.com/joyent/node/commit/b159c6) or newer it's already installed!)
+- [install node.js](http://nodejs.org/) (last tested on v12.18.4)
+- install npm (if you're running node.js (last tested on 6.14.6)
 - cd to the scrumblr directory; you should see server.js and config.js and other files.
 - run `npm install`
 - run Redis or MongoDB database engine
@@ -67,6 +68,7 @@ how to install and run on your own computer (linux/osx)
 - optionally you can choose MongoDB or Redis instance using `node server.js --port 80 --redis DB_HOST:6379` or `node server.js --port 80 --mongodb DB_HOST:27017`
 - open a browser to `http://<server>:<port>` where `<server>` is your server's url or IP address, and `<port>` is the port you chose in the previous step.
 - consider running the service using `pm2` tool (https://pm2.keymetrics.io/)
+- Dockerfile included for running using Swarm
 
 license
 -------
