@@ -9,10 +9,11 @@ FROM centos:7
 # chown scrumblr:games /scrumblr
 # docker run -v /scrumblr:/var/lib/redis -u scrumblr -p 8080:8080  scrumblr-img
 
-# Update OS
+# Update OS, use higher version of nodejs
 RUN rpm --rebuilddb \
      && yum install -y yum-plugin-ovl epel-release \
      && yum -y update \
+     && curl -sL https://rpm.nodesource.com/setup_12.x | bash - \
      && yum install -y nodejs redis git \
      && yum clean all
 
