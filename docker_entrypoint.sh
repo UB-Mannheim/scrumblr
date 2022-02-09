@@ -3,4 +3,4 @@
 
 cd /opt/scrumblr
 nohup redis-server /etc/redis.conf &
-npm start
+npm start -- --baseurl /scrumblr
