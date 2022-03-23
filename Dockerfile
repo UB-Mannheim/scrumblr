@@ -19,7 +19,7 @@ RUN rpm --rebuilddb \
 
 # Install application
 RUN cd /opt \
-    && git clone https://github.com/lspevak/scrumblr \
+    && git clone https://github.com/UB-Mannheim/scrumblr \
     && cd /opt/scrumblr \
     && npm install
 
